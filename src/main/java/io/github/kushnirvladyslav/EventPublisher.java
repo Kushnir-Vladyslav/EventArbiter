@@ -36,14 +36,14 @@ import org.slf4j.LoggerFactory;
  * @see EventManager
  * @see Event
  */
-public abstract class EventPublisher {
+public abstract class EventPublisher implements AutoCloseable{
     /** Logger instance for this publisher */
     private static final Logger LOGGER = LoggerFactory.getLogger(EventPublisher.class);
 
     /** Reference to the singleton event manager */
     protected final EventManager eventManager = EventManager.getInstance();
     /** Current operational status of this publisher */
-    protected volatile Status status = Status.RUNNING;
+    private volatile Status status = Status.RUNNING;
 
     /**
      * Publishes an event to the event management system.
@@ -123,6 +123,14 @@ public abstract class EventPublisher {
      * @throws IllegalStateException if shutdown fails or if already shut down
      */
     public abstract void shutdown();
+
+    /**
+     * Automatic resource closure tool.
+     */
+    @Override
+    public void close() {
+        shutdown();
+    }
 
     /**
      * Sets the status of this publisher and logs the change.

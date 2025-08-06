@@ -38,7 +38,7 @@ import java.util.concurrent.PriorityBlockingQueue;
  * @see EventManager
  * @see Event
  */
-public abstract class EventSubscriber {
+public abstract class EventSubscriber implements AutoCloseable{
     /** Logger instance for this subscriber */
     private static final Logger LOGGER = LoggerFactory.getLogger(EventSubscriber.class);
 
@@ -94,7 +94,7 @@ public abstract class EventSubscriber {
      *
      * @param event the event to process
      */
-    public void onEvent(Event<?> event) {
+    public final void onEvent(Event<?> event) {
         LOGGER.debug("Clearing event queue for {}", this.getClass().getSimpleName());
         subscriberQueue.put(event);
     }
@@ -206,6 +206,14 @@ public abstract class EventSubscriber {
      * Subclasses must implement this method to define their specific shutdown behavior.
      */
     public abstract void shutdown();
+
+    /**
+     * Automatic resource closure tool.
+     */
+    @Override
+    public void close() {
+        shutdown();
+    }
 
     /**
      * Sets the status of this subscriber and logs the change.

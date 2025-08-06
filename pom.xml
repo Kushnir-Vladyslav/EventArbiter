@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>EventArbiter</name>
-    <description>A simple and extensible event library for Java 8+ with support for priorities and async processing.</description>
+    <description>EventArbiter is a Java library 8+ that provides a flexible and thread-safe event management system built around a central singleton manager that ensures event distribution between publishers and subscribers. </description>
     <url>https://github.com/Kushnir-Vladyslav/EventArbiter</url>
 
     <licenses>
