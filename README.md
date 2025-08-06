@@ -1,3 +1,6 @@
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.kushnir-vladyslav/event-arbiter.svg?style=for-the-badge)](https://search.maven.org/artifact/io.github.kushnir-vladyslav/event-arbiter)
+[![Javadoc](https://img.shields.io/badge/Javadoc-online-blue.svg?style=for-the-badge)](https://kushnir-vladyslav.github.io/EventArbiter/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)
 # EventArbiter
 
 EventArbiter is a Java library that provides a robust and flexible event management system built around a central singleton manager that ensures efficient event distribution between publishers and subscribers.
@@ -16,6 +19,12 @@ EventArbiter is a Java library that provides a robust and flexible event managem
 - Custom publisher creation using the EventPublisher abstract class
 - Custom subscriber creation using the EventSubscriber abstract class
 - Ready-to-use implementations for common use cases
+
+## Documentation
+
+The full Javadoc documentation is available online. It provides a detailed API reference for all public classes and methods.
+
+**[View Javadoc on GitHub Pages](https://kushnir-vladyslav.github.io/EventArbiter/)**
 
 ### Built-in Implementations
 
@@ -145,6 +154,20 @@ subscriber.shutdown();
 publisher.shutdown();
 
 ```
+### Creating Custom Event
+
+```java
+public class StringEvent extends Event<String> {
+    public StringEvent (String string) {
+        data = string;
+    }
+
+    public StringEvent (String string, EventPriority priority) {
+        data = string;
+        this.priority = priority;
+    }
+}
+```
 
 ### Creating Custom Publisher
 
@@ -157,26 +180,6 @@ public class CustomEventPublisher extends EventPublisher {
     }
 }
 ```
-
-#### Available API of the basic EventPublisher
-
-##### `protected void publishEvent(Event<?> event)`
-- Publishes the event to the event management system
-- Checks for null and publisher status
-- Throws an error if the event is null or the publisher is stopped
-
-##### `public Status getStatus()`
-- Returns the current status of the publisher's work
-
-##### `protected void setStatus(Status newStatus)`
-- Set the status of the publisher's work
-
-##### `public boolean isRunning()`
-##### `public boolean isShutdown()`
-- Check if the publisher is in this state
-
-##### `protected void checkNotShutdown()`
-- Check if the publisher is shutdown, if true throw exception
 
 ### Creating Custom Subscriber
 
@@ -237,34 +240,6 @@ public class CustomEventSubscriber extends EventSubscriber {
     }
 }
 ```
-
-#### Available API of the basic EventSubscriber
-
-##### `protected final PriorityBlockingQueue<Event<?>> subscriberQueue;`
--  Queue for storing received events before processing
-
-##### `protected void subscribe()`
-##### `protected void unsubscribe()`
-- Subscribe/unsubscribe a listener from the event manager
-
-##### `public Status getStatus()`
-- Returns the current status of the publisher's work
-
-##### `protected void setStatus(Status newStatus)`
-- Set the status of the publisher's work
-
-##### `public boolean isRunning()`
-##### `public boolean isPaused()`
-##### `public boolean isStopped()`
-##### `public boolean isShutdown()`
-##### `protected boolean canRun()`
-- Check if the publisher is in this state
-
-##### `protected void clearQueue()`
-- Clears all pending events from the subscriber's queue
-
-##### `protected void checkNotShutdown()`
-- Check if the publisher is shutdown, if true throw exception
 
 ## Important Usage Notes
 
