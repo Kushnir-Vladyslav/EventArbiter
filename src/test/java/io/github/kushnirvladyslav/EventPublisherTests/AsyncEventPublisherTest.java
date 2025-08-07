@@ -387,6 +387,8 @@ public class AsyncEventPublisherTest {
 
         assertTrue(latch.await(3, TimeUnit.SECONDS));
 
+        Thread.sleep(50);
+
         assertEquals(2, successCount.get());
         assertEquals(1, errorCount.get());
         assertEquals(1, subscriber.getTotalErrorCount());

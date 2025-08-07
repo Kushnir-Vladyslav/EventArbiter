@@ -30,10 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -309,7 +306,7 @@ public class BatchEventPublisherTest {
     }
 
     @Test
-    void testConcurrentPublishing() throws InterruptedException {
+    void testConcurrentPublishing() throws InterruptedException, ExecutionException {
         final AtomicInteger eventCount = new AtomicInteger(0);
         final int threadsCount = 3;
         final int eventsPerThread = 10;
@@ -334,9 +331,13 @@ public class BatchEventPublisherTest {
                 });
             }
 
-            Thread.sleep(500);
 
-            publisher.flush();
+            testExecutor.shutdown();
+            assertTrue(testExecutor.awaitTermination(5, TimeUnit.SECONDS));
+
+            if (publisher != null) {
+                publisher.flush();
+            }
 
             assertTrue(latch.await(5, TimeUnit.SECONDS));
             assertEquals(totalEvents, eventCount.get());

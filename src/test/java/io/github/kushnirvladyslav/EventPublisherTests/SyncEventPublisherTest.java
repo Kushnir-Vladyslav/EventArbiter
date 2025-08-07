@@ -52,10 +52,6 @@ public class SyncEventPublisherTest {
     @Test
     void testPublisherInitialStatus() {
         assertEquals(Status.RUNNING, publisher.getStatus());
-        System.out.println(this.getClass().getSimpleName());
-        System.out.println(this.getClass().getName());
-        System.out.println(this.getClass().getCanonicalName());
-        System.out.println(this.getClass().getTypeName());
     }
 
     @Test
@@ -170,7 +166,7 @@ public class SyncEventPublisherTest {
     }
 
     @Test
-    void testPublishEventData() {
+    void testPublishEventData() throws InterruptedException {
         StringEventTest stringEvent = new StringEventTest("string data");
         IntEventTest intEvent = new IntEventTest(123);
         DoubleEventTest doubleEvent = new DoubleEventTest(45.67);
@@ -187,6 +183,8 @@ public class SyncEventPublisherTest {
         publisher.publish(stringEvent);
         publisher.publish(intEvent);
         publisher.publish(doubleEvent);
+
+        Thread.sleep(50);
 
         subscriber.processEvents();
 
@@ -216,7 +214,7 @@ public class SyncEventPublisherTest {
     }
 
     @Test
-    void testPublishLargeNumberOfEvents() {
+    void testPublishLargeNumberOfEvents() throws InterruptedException {
         final AtomicInteger eventCount = new AtomicInteger(0);
         final int totalEvents = 1000;
 
@@ -226,6 +224,8 @@ public class SyncEventPublisherTest {
         for (int i = 0; i < totalEvents; i++) {
             publisher.publish(new IntEventTest(i));
         }
+
+        Thread.sleep(50);
 
         subscriber.processEvents();
 

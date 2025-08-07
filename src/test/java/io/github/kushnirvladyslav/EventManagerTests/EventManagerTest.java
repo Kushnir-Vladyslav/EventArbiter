@@ -159,13 +159,8 @@ class EventManagerTest {
 
     @AfterEach
     void tearDown() {
-        if (eventManager.getStatus() != Status.SHUTDOWN) {
-            eventManager.stop();
+        if (eventManager.getStatus() != Status.RUNNING) {
+            eventManager.run();
         }
-    }
-
-    @AfterAll
-    static void shutdownManager() {
-        EventManager.getInstance().shutdown();
     }
 }
